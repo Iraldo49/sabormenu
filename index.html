@@ -1,0 +1,3809 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabor da Esquina</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header - RESPONSIVO */
+    .header {
+      background: linear-gradient(135deg, #ea1d2c 0%, #c0162a 100%);
+      color: white;
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    @media (min-width: 768px) {
+      .header {
+        padding: 16px 20px;
+      }
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+
+    @media (min-width: 768px) {
+      .logo {
+        font-size: 24px;
+        gap: 8px;
+      }
+    }
+
+    .logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      object-fit: cover;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .logo-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .header-actions {
+        gap: 12px;
+      }
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 768px) {
+      .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .btn {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+    }
+
+    .btn-primary {
+      background: white;
+      color: #ea1d2c;
+    }
+
+    .btn-primary:hover {
+      background: #f8f8f8;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .btn-success {
+      background: #22c55e;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #16a34a;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-info {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-info:hover {
+      background: #2563eb;
+    }
+
+    /* Main Content */
+    #main-content {
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Modal - RESPONSIVO */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    @media (max-width: 480px) {
+      .modal {
+        padding: 12px;
+      }
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 480px) {
+      .modal-content {
+        padding: 20px;
+        border-radius: 10px;
+      }
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .modal-header {
+        font-size: 24px;
+        margin-bottom: 24px;
+      }
+    }
+
+    /* Formulário de Login */
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .form-group {
+        margin-bottom: 20px;
+      }
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #4a4a4a;
+      font-size: 13px;
+    }
+
+    @media (min-width: 768px) {
+      .form-label {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    @media (min-width: 768px) {
+      .form-input {
+        padding: 12px 16px;
+        border-radius: 8px;
+      }
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #ea1d2c;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+      .form-actions {
+        gap: 12px;
+        margin-top: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-actions {
+        flex-direction: column;
+      }
+      
+      .form-actions .btn {
+        width: 100%;
+      }
+    }
+
+    .form-actions .btn {
+      min-width: 100px;
+    }
+
+    @media (max-width: 480px) {
+      .form-actions .btn {
+        min-width: auto;
+      }
+    }
+
+    /* Carousel Section - COMPLETAMENTE RESPONSIVO */
+    .carousel-section {
+      padding: 24px 16px;
+      background: linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-section {
+        padding: 30px 20px;
+      }
+    }
+
+    .carousel-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #ea1d2c;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-title {
+        font-size: 24px;
+        margin-bottom: 24px;
+      }
+    }
+
+    .carousel-container {
+      position: relative;
+      height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 800px;
+      width: 100%;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-container {
+        height: 300px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-container {
+        height: 320px;
+        perspective: 1000px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .carousel-container {
+        height: 350px;
+      }
+    }
+
+    .carousel-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-slide {
+      position: absolute;
+      width: 180px;
+      height: 220px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(234, 29, 44, 0.15);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide {
+        width: 200px;
+        height: 240px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide {
+        width: 250px;
+        height: 280px;
+        border-radius: 16px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .carousel-slide {
+        width: 280px;
+        height: 320px;
+      }
+    }
+
+    /* CAROUSEL RESPONSIVO COM 3 CARDS */
+    .carousel-slide.center {
+      transform: translateX(0) scale(1.15);
+      z-index: 10;
+      box-shadow: 0 20px 40px rgba(234, 29, 44, 0.3);
+      width: 200px;
+      height: 240px;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.center {
+        width: 220px;
+        height: 260px;
+        transform: translateX(0) scale(1.2);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.center {
+        width: 280px;
+        height: 320px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .carousel-slide.center {
+        width: 300px;
+        height: 340px;
+      }
+    }
+
+    .carousel-slide.left {
+      transform: translateX(-100px) scale(0.85);
+      opacity: 0.8;
+      z-index: 5;
+      filter: blur(1px);
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.left {
+        transform: translateX(-120px) scale(0.9);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.left {
+        transform: translateX(-150px) scale(0.9);
+      }
+    }
+
+    .carousel-slide.right {
+      transform: translateX(100px) scale(0.85);
+      opacity: 0.8;
+      z-index: 5;
+      filter: blur(1px);
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.right {
+        transform: translateX(120px) scale(0.9);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.right {
+        transform: translateX(150px) scale(0.9);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .carousel-slide.left {
+        transform: translateX(-80px) scale(0.8);
+      }
+      
+      .carousel-slide.right {
+        transform: translateX(80px) scale(0.8);
+      }
+    }
+
+    .carousel-slide.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .carousel-image {
+      width: 100%;
+      height: 110px;
+      background: linear-gradient(135deg, #ea1d2c 0%, #c0162a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-image {
+        height: 130px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-image {
+        height: 160px;
+      }
+    }
+
+    .carousel-slide.center .carousel-image {
+      height: 120px;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.center .carousel-image {
+        height: 140px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.center .carousel-image {
+        height: 180px;
+      }
+    }
+
+    .carousel-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .carousel-slide.center .carousel-image img {
+      transform: scale(1.05);
+    }
+
+    .promo-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #22c55e;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 10px;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+
+    @media (min-width: 768px) {
+      .promo-badge {
+        top: 12px;
+        right: 12px;
+        padding: 6px 16px;
+        font-size: 12px;
+        border-radius: 20px;
+      }
+    }
+
+    .carousel-content {
+      padding: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-content {
+        padding: 15px;
+      }
+    }
+
+    .carousel-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-item-title {
+        font-size: 15px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-item-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .carousel-slide.center .carousel-item-title {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.center .carousel-item-title {
+        font-size: 16px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.center .carousel-item-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .carousel-price {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-price {
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .carousel-current-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ea1d2c;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-current-price {
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-current-price {
+        font-size: 20px;
+      }
+    }
+
+    .carousel-slide.center .carousel-current-price {
+      font-size: 18px;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.center .carousel-current-price {
+        font-size: 20px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.center .carousel-current-price {
+        font-size: 24px;
+      }
+    }
+
+    .carousel-original-price {
+      font-size: 12px;
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-original-price {
+        font-size: 14px;
+      }
+    }
+
+    /* Botão de adicionar */
+    .carousel-add-btn {
+      width: 90%;
+      padding: 8px;
+      background: linear-gradient(135deg, #ea1d2c 0%, #c0162a 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-add-btn {
+        font-size: 13px;
+        padding: 9px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-add-btn {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+    }
+
+    .carousel-slide.center .carousel-add-btn {
+      padding: 9px;
+      font-size: 13px;
+      width: 92%;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-slide.center .carousel-add-btn {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-slide.center .carousel-add-btn {
+        padding: 12px;
+        font-size: 15px;
+        width: 95%;
+      }
+    }
+
+    .carousel-add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(234, 29, 44, 0.3);
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      color: #ea1d2c;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+      }
+    }
+
+    .carousel-btn:hover {
+      background: #ea1d2c;
+      color: white;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(234, 29, 44, 0.3);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: #f5f5f5;
+      color: #999;
+    }
+
+    .carousel-prev {
+      left: 8px;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-prev {
+        left: 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-prev {
+        left: 20px;
+      }
+    }
+
+    .carousel-next {
+      right: 8px;
+    }
+
+    @media (min-width: 480px) {
+      .carousel-next {
+        right: 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-next {
+        right: 20px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .carousel-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+      
+      .carousel-prev {
+        left: 5px;
+      }
+      
+      .carousel-next {
+        right: 5px;
+      }
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-dots {
+        gap: 12px;
+        margin-top: 30px;
+      }
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ddd;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-dot {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    .carousel-dot.active {
+      background: #ea1d2c;
+      transform: scale(1.3);
+    }
+
+    /* Categories - RESPONSIVO */
+    .categories {
+      padding: 16px;
+      background: white;
+      border-bottom: 1px solid #f0f0f0;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .categories {
+        padding: 20px;
+      }
+    }
+
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-chip {
+      display: inline-block;
+      padding: 6px 16px;
+      margin-right: 8px;
+      border-radius: 18px;
+      background: #f5f5f5;
+      color: #666;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 480px) {
+      .category-chip {
+        padding: 8px 18px;
+        margin-right: 10px;
+        font-size: 13px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .category-chip {
+        padding: 8px 20px;
+        margin-right: 12px;
+        font-size: 14px;
+        border-radius: 20px;
+      }
+    }
+
+    .category-chip.active {
+      background: #ea1d2c;
+      color: white;
+    }
+
+    /* Products Section - RESPONSIVO */
+    .products-section {
+      padding: 16px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .products-section {
+        padding: 20px;
+      }
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    @media (min-width: 480px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 14px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+      }
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .product-card {
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 120px;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 480px) {
+      .product-image {
+        height: 140px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .product-image {
+        height: 160px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .product-image {
+        height: 180px;
+      }
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-image-fallback {
+      font-size: 48px;
+      color: #999;
+    }
+
+    @media (min-width: 768px) {
+      .product-image-fallback {
+        font-size: 64px;
+      }
+    }
+
+    .promotion-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #22c55e;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    @media (min-width: 768px) {
+      .promotion-badge {
+        top: 12px;
+        right: 12px;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+      }
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .product-info {
+        padding: 16px;
+      }
+    }
+
+    .product-name {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 480px) {
+      .product-name {
+        font-size: 14px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .product-name {
+        font-size: 16px;
+      }
+    }
+
+    .product-description {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 8px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @media (min-width: 480px) {
+      .product-description {
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .product-description {
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+    }
+
+    .product-price {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (min-width: 768px) {
+      .product-price {
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+    }
+
+    .current-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ea1d2c;
+    }
+
+    @media (min-width: 480px) {
+      .current-price {
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .current-price {
+        font-size: 20px;
+      }
+    }
+
+    .original-price {
+      font-size: 12px;
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    @media (min-width: 768px) {
+      .original-price {
+        font-size: 14px;
+      }
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 8px;
+      background: #ea1d2c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 12px;
+    }
+
+    @media (min-width: 480px) {
+      .add-to-cart-btn {
+        padding: 9px;
+        font-size: 13px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .add-to-cart-btn {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+    }
+
+    .add-to-cart-btn:hover {
+      background: #c0162a;
+    }
+
+    /* Cart Icon - RESPONSIVO */
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cart-icon span:first-child {
+      font-size: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .cart-icon span:first-child {
+        font-size: 24px;
+      }
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #22c55e;
+      color: white;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    @media (min-width: 768px) {
+      .cart-badge {
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        font-size: 11px;
+      }
+    }
+
+    /* Cart Panel - RESPONSIVO */
+    .cart-panel {
+      position: fixed;
+      right: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      box-shadow: -4px 0 16px rgba(0,0,0,0.2);
+      transition: right 0.3s;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+      .cart-panel {
+        width: 400px;
+        right: -400px;
+      }
+    }
+
+    .cart-panel.active {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .cart-header {
+        padding: 20px;
+      }
+    }
+
+    .cart-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    @media (min-width: 768px) {
+      .cart-header h2 {
+        font-size: 20px;
+      }
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+      padding: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .close-cart {
+        font-size: 24px;
+      }
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (min-width: 768px) {
+      .cart-items {
+        padding: 20px;
+      }
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    @media (min-width: 768px) {
+      .cart-item {
+        gap: 12px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+      }
+    }
+
+    .cart-item-info {
+      flex: 1;
+      min-width: 0; /* Para evitar overflow */
+    }
+
+    .cart-item-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+      .cart-item-name {
+        font-size: 15px;
+      }
+    }
+
+    .cart-item-price {
+      color: #ea1d2c;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .cart-item-price {
+        font-size: 16px;
+      }
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 768px) {
+      .cart-item-quantity {
+        gap: 8px;
+        margin-top: 8px;
+      }
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+    }
+
+    .cart-footer {
+      padding: 16px;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    @media (min-width: 768px) {
+      .cart-footer {
+        padding: 20px;
+      }
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    @media (min-width: 768px) {
+      .cart-total {
+        margin-bottom: 16px;
+        font-size: 18px;
+      }
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 12px;
+      background: #22c55e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @media (min-width: 768px) {
+      .checkout-btn {
+        padding: 14px;
+        font-size: 16px;
+      }
+    }
+
+    .checkout-btn:hover {
+      background: #16a34a;
+    }
+
+    .payment-method-btn {
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      background: white;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+      color: #4a4a4a;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .payment-method-btn {
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+    }
+
+    .payment-method-btn:hover {
+      border-color: #ea1d2c;
+      background: #fef2f2;
+    }
+
+    .payment-method-btn.selected {
+      border-color: #ea1d2c;
+      background: #ea1d2c;
+      color: white;
+    }
+
+    /* Footer - RESPONSIVO */
+    .footer {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      color: white;
+      padding: 30px 16px 16px;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .footer {
+        padding: 40px 20px 20px;
+      }
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .footer-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    @media (min-width: 768px) {
+      .footer-title {
+        font-size: 20px;
+        margin-bottom: 24px;
+      }
+    }
+
+    .partners-slider-container {
+      position: relative;
+      padding: 0 30px;
+      margin-bottom: 24px;
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      .partners-slider-container {
+        padding: 0 25px;
+      }
+    }
+
+    .partners-slider {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    .partners-track {
+      display: flex;
+      gap: 20px;
+      transition: transform 0.5s ease;
+      padding: 10px 0;
+      width: max-content;
+    }
+
+    @media (min-width: 768px) {
+      .partners-track {
+        gap: 30px;
+      }
+    }
+
+    .partner-logo {
+      flex: 0 0 100px;
+      height: 60px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+
+    @media (min-width: 480px) {
+      .partner-logo {
+        flex: 0 0 120px;
+        height: 70px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .partner-logo {
+        flex: 0 0 150px;
+        height: 80px;
+        border-radius: 12px;
+        padding: 10px;
+      }
+    }
+
+    .partner-logo:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .partner-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .partner-placeholder {
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    @media (min-width: 768px) {
+      .partner-placeholder {
+        font-size: 14px;
+      }
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 10;
+      color: white;
+    }
+
+    @media (min-width: 480px) {
+      .slider-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .slider-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+    }
+
+    .slider-btn:hover {
+      background: rgba(234, 29, 44, 0.8);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .slider-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .slider-prev {
+      left: 0;
+    }
+
+    .slider-next {
+      right: 0;
+    }
+
+    .footer-info {
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #999;
+      font-size: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .footer-info {
+        padding-top: 20px;
+        font-size: 14px;
+      }
+    }
+
+    .footer-info p {
+      margin-bottom: 4px;
+    }
+
+    #footer-whatsapp {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* Admin Panel - RESPONSIVO */
+    .admin-panel {
+      padding: 16px;
+      flex: 1;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .admin-panel {
+        padding: 20px;
+      }
+    }
+
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+      flex-wrap: wrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (min-width: 768px) {
+      .admin-tabs {
+        gap: 8px;
+        margin-bottom: 24px;
+        flex-wrap: nowrap;
+        overflow-x: visible;
+      }
+    }
+
+    .admin-tab {
+      padding: 10px 16px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.2s;
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .admin-tab {
+        padding: 12px 24px;
+        font-size: 14px;
+      }
+    }
+
+    .admin-tab.active {
+      color: #ea1d2c;
+      border-bottom-color: #ea1d2c;
+    }
+
+    .admin-content {
+      display: none;
+      width: 100%;
+    }
+
+    .admin-content.active {
+      display: block;
+    }
+
+    .admin-actions {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .admin-actions {
+        margin-bottom: 24px;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-actions {
+        flex-direction: column;
+      }
+      
+      .admin-actions .btn {
+        width: 100%;
+      }
+    }
+
+    .product-list {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .product-list {
+        gap: 16px;
+      }
+    }
+
+    .product-item {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    @media (min-width: 768px) {
+      .product-item {
+        padding: 16px;
+        gap: 16px;
+        border-radius: 12px;
+        flex-wrap: nowrap;
+      }
+    }
+
+    .product-item-image {
+      width: 60px;
+      height: 60px;
+      background: #f5f5f5;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      overflow: hidden;
+      order: 1;
+    }
+
+    @media (min-width: 768px) {
+      .product-item-image {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+        border-radius: 8px;
+        order: 0;
+      }
+    }
+
+    .product-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-item-details {
+      flex: 1;
+      min-width: 0;
+      order: 3;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .product-item-details {
+        order: 0;
+        width: auto;
+      }
+    }
+
+    .product-item-details > div:first-child {
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+      .product-item-details > div:first-child {
+        font-size: 15px;
+      }
+    }
+
+    .product-item-details > div:nth-child(2) {
+      color: #666;
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    @media (min-width: 768px) {
+      .product-item-details > div:nth-child(2) {
+        font-size: 14px;
+      }
+    }
+
+    .product-item-actions {
+      display: flex;
+      gap: 6px;
+      order: 2;
+      margin-left: auto;
+    }
+
+    @media (min-width: 768px) {
+      .product-item-actions {
+        gap: 8px;
+        margin-left: 0;
+        order: 0;
+      }
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+
+    .icon-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 16px;
+      color: #999;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .empty-state {
+        padding: 60px 20px;
+      }
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .empty-state-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .empty-state p {
+        font-size: 16px;
+      }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 14px;
+      text-align: center;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+
+    @media (min-width: 768px) {
+      .toast {
+        bottom: 24px;
+        padding: 16px 24px;
+        font-size: 16px;
+      }
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* Config Sections - RESPONSIVO */
+    .config-section {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .config-section {
+        padding: 24px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+      }
+    }
+
+    .config-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+
+    @media (min-width: 768px) {
+      .config-section h3 {
+        font-size: 18px;
+      }
+    }
+
+    .logo-preview {
+      width: 80px;
+      height: 80px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin: 0 auto 16px;
+    }
+
+    @media (min-width: 768px) {
+      .logo-preview {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+      }
+    }
+
+    .logo-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Partners Config Section - RESPONSIVO */
+    .partners-config-section {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .partners-config-section {
+        padding: 24px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+      }
+    }
+
+    .partners-config-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (min-width: 768px) {
+      .partners-config-section h3 {
+        font-size: 18px;
+      }
+    }
+
+    .partners-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      min-height: 100px;
+      padding: 12px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 2px dashed #ddd;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .partners-preview {
+        gap: 15px;
+        padding: 15px;
+      }
+    }
+
+    .partner-preview-item {
+      width: 80px;
+      height: 50px;
+      background: white;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #e0e0e0;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .partner-preview-item {
+        width: 100px;
+        height: 60px;
+        border-radius: 8px;
+      }
+    }
+
+    .partner-preview-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .remove-partner-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: white;
+      border: none;
+      font-size: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    @media (min-width: 768px) {
+      .remove-partner-btn {
+        top: -8px;
+        right: -8px;
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+      }
+    }
+
+    .remove-partner-btn:hover {
+      background: #dc2626;
+    }
+
+    .add-partner-btn {
+      width: 80px;
+      height: 50px;
+      background: #f5f5f5;
+      border: 2px dashed #ddd;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #666;
+      font-size: 10px;
+      text-align: center;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .add-partner-btn {
+        width: 100px;
+        height: 60px;
+        font-size: 12px;
+        padding: 8px;
+        border-radius: 8px;
+      }
+    }
+
+    .add-partner-btn:hover {
+      border-color: #ea1d2c;
+      background: #fef2f2;
+      color: #ea1d2c;
+    }
+
+    .add-partner-btn i {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .add-partner-btn i {
+        font-size: 20px;
+      }
+    }
+
+    /* Payment Methods Grid - RESPONSIVO */
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      width: 100%;
+    }
+
+    @media (min-width: 480px) {
+      .payment-methods-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .payment-methods-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+    }
+
+    /* File Input Wrapper - RESPONSIVO */
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-input-label {
+      display: block;
+      padding: 10px 14px;
+      background: #f5f5f5;
+      border: 2px dashed #ddd;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+
+    @media (min-width: 768px) {
+      .file-input-label {
+        padding: 12px 16px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+    }
+
+    .file-input-label:hover {
+      border-color: #ea1d2c;
+      background: #fef2f2;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 100px;
+      background: #f5f5f5;
+      border-radius: 6px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .image-preview {
+        height: 120px;
+        border-radius: 8px;
+      }
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Textos pequenos - RESPONSIVO */
+    small {
+      font-size: 11px;
+    }
+
+    @media (min-width: 768px) {
+      small {
+        font-size: 12px;
+      }
+    }
+
+    /* Loading State */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(234, 29, 44, 0.3);
+      border-radius: 50%;
+      border-top-color: #ea1d2c;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Touch Improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .btn:hover,
+      .carousel-add-btn:hover,
+      .add-to-cart-btn:hover,
+      .checkout-btn:hover,
+      .payment-method-btn:hover,
+      .icon-btn:hover {
+        transform: none;
+      }
+      
+      .carousel-btn:hover {
+        transform: translateY(-50%);
+      }
+      
+      .partner-logo:hover {
+        transform: none;
+      }
+      
+      .product-card:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="logo">
+          <img id="logo-img" src="" alt="Logo" class="logo-img">
+          <span id="restaurant-name">Sabor da Esquina</span>
+        </div>
+        <div class="header-actions">
+          <div id="cart-icon" class="cart-icon" style="display: none;">
+            <span>🛒</span>
+            <span id="cart-badge" class="cart-badge">0</span>
+          </div>
+          <button id="login-btn" class="btn btn-primary">Entrar</button>
+          <button id="logout-btn" class="btn btn-secondary" style="display: none;">Sair</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+      <!-- Carousel com 3 cards -->
+      <div id="carousel-section" class="carousel-section" style="display: none;">
+        <h2 class="carousel-title">🔥 Destaques</h2>
+        <div class="carousel-container">
+          <button class="carousel-btn carousel-prev" onclick="prevSlide()">‹</button>
+          <div id="carousel-track" class="carousel-track"></div>
+          <button class="carousel-btn carousel-next" onclick="nextSlide()">›</button>
+        </div>
+        <div id="carousel-dots" class="carousel-dots"></div>
+      </div>
+
+      <!-- Categories -->
+      <div class="categories">
+        <span class="category-chip active" data-category="all">Todos</span>
+        <span class="category-chip" data-category="burgers">🍔 Burgers</span>
+        <span class="category-chip" data-category="pizzas">🍕 Pizzas</span>
+        <span class="category-chip" data-category="bebidas">🥤 Bebidas</span>
+        <span class="category-chip" data-category="sobremesas">🍰 Sobremesas</span>
+      </div>
+
+      <!-- Products -->
+      <div class="products-section">
+        <div id="products-grid" class="products-grid"></div>
+        <div id="empty-products" class="empty-state" style="display: none;">
+          <div class="empty-state-icon">🍽️</div>
+          <p>Nenhum produto disponível no momento</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer com Slider de Parceiros -->
+    <div class="footer" id="footer">
+      <div class="footer-content">
+        <h3 class="footer-title">🏆 Nossos Parceiros</h3>
+        <div class="partners-slider-container">
+          <button class="slider-btn slider-prev" id="partners-prev">‹</button>
+          <div class="partners-slider">
+            <div id="partners-track" class="partners-track"></div>
+          </div>
+          <button class="slider-btn slider-next" id="partners-next">›</button>
+        </div>
+        <div class="footer-info">
+          <p>© 2024 Sabor da Esquina. Todos os direitos reservados.</p>
+          <p style="margin-top: 4px; font-size: 11px; color: #777;">
+            WhatsApp: <span id="footer-whatsapp">+258 82 293 7027</span> | 
+            Pedidos através do nosso site ou WhatsApp
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel" style="display: none;">
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="products">Produtos</button>
+        <button class="admin-tab" data-tab="config">Configurações</button>
+        <button class="admin-tab" data-tab="partners">Parceiros</button>
+        <button class="admin-tab" data-tab="orders">Pedidos</button>
+      </div>
+
+      <!-- Products Tab -->
+      <div id="admin-products" class="admin-content active">
+        <div class="admin-actions">
+          <button id="add-product-btn" class="btn btn-success">+ Adicionar Produto</button>
+        </div>
+        <div id="admin-products-list" class="product-list"></div>
+      </div>
+
+      <!-- Config Tab -->
+      <div id="admin-config" class="admin-content">
+        <div class="config-section">
+          <h3>📝 Informações do Restaurante</h3>
+          <div class="form-group">
+            <label class="form-label" for="restaurant-name-input">Nome do Restaurante</label>
+            <input type="text" id="restaurant-name-input" class="form-input" value="Sabor da Esquina">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="whatsapp-number">Número do WhatsApp</label>
+            <input type="text" id="whatsapp-number" class="form-input" value="+258822937027" placeholder="+258 84 123 4567">
+          </div>
+          <button class="btn btn-success" onclick="saveRestaurantConfig()">Salvar Configurações</button>
+        </div>
+
+        <div class="config-section">
+          <h3>🖼️ Logotipo do Restaurante</h3>
+          <div class="logo-preview">
+            <img id="logo-preview-img" src="" alt="Preview do Logo" style="display: none;">
+            <span id="logo-preview-text" style="color: #999; font-size: 14px;">Nenhum logo carregado</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Upload do Logotipo</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="logo-upload" accept="image/*" class="form-input">
+              <div class="file-input-label" id="logo-file-label">
+                📷 Clique para selecionar um logotipo
+              </div>
+            </div>
+            <small style="color: #666; margin-top: 4px; display: block;">
+              Formatos suportados: JPG, PNG, SVG. Tamanho recomendado: 200x200px
+            </small>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-info" onclick="uploadLogo()">Upload do Logo</button>
+            <button class="btn btn-secondary" onclick="removeLogo()">Remover Logo</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Partners Tab -->
+      <div id="admin-partners" class="admin-content">
+        <div class="partners-config-section">
+          <h3>🤝 Gerenciar Parceiros</h3>
+          <div class="form-group">
+            <label class="form-label">Adicionar Logos de Parceiros</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="partners-upload" accept="image/*" multiple class="form-input">
+              <div class="file-input-label">
+                📷 Clique para selecionar logos de parceiros (múltiplos)
+              </div>
+            </div>
+            <small style="color: #666; margin-top: 4px; display: block;">
+              Formatos suportados: JPG, PNG. Tamanho recomendado: 300x150px
+            </small>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Pré-visualização dos Parceiros</label>
+            <div id="partners-preview" class="partners-preview">
+              <!-- Os logos dos parceiros serão renderizados aqui -->
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button class="btn btn-success" onclick="savePartners()">Salvar Parceiros</button>
+            <button class="btn btn-danger" onclick="clearPartners()">Remover Todos</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Tab -->
+      <div id="admin-orders" class="admin-content">
+        <div id="admin-orders-list" class="product-list"></div>
+      </div>
+    </div>
+
+    <!-- Cart Panel -->
+    <div id="cart-panel" class="cart-panel">
+      <div class="cart-header">
+        <h2>Seu Carrinho</h2>
+        <button class="close-cart" id="close-cart">×</button>
+      </div>
+      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cart-total">0,00 MT</span>
+        </div>
+        <div class="form-group" style="margin-top: 12px;">
+          <label class="form-label">Seu Nome</label>
+          <div style="padding: 10px 14px; background: #f5f5f5; border-radius: 6px; color: #666; font-weight: 600;" id="cart-customer-name"></div>
+        </div>
+        <div class="form-group" style="margin-top: 12px;">
+          <label class="form-label">Método de Pagamento</label>
+          <div class="payment-methods-grid">
+            <button type="button" class="payment-method-btn" data-method="Dinheiro">Dinheiro</button>
+            <button type="button" class="payment-method-btn" data-method="M-Pesa">M-Pesa</button>
+            <button type="button" class="payment-method-btn" data-method="E-Mola">E-Mola</button>
+            <button type="button" class="payment-method-btn" data-method="Transferência">Transferência</button>
+          </div>
+        </div>
+        <button id="checkout-btn" class="checkout-btn">Enviar Pedido no WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <h2 class="modal-header" id="login-title">Entrar</h2>
+        <form id="login-form">
+          <div class="form-group" id="name-group" style="display: none;">
+            <label class="form-label" for="login-name">Nome Completo</label>
+            <input type="text" id="login-name" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-username">Usuário / Celular</label>
+            <input type="text" id="login-username" class="form-input" placeholder="admin ou +258 84 123 4567" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Senha</label>
+            <input type="password" id="login-password" class="form-input" required>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancel-login">Cancelar</button>
+            <button type="submit" class="btn btn-success">Confirmar</button>
+          </div>
+        </form>
+        <p style="text-align: center; margin-top: 16px; font-size: 13px; color: #666;">
+          <span id="login-switch-text">Não tem conta?</span>
+          <a href="#" id="login-switch" style="color: #ea1d2c; font-weight: 600;">Criar conta</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Product Form Modal -->
+    <div id="product-modal" class="modal">
+      <div class="modal-content">
+        <h2 class="modal-header" id="product-modal-title">Adicionar Produto</h2>
+        <form id="product-form">
+          <div class="form-group">
+            <label class="form-label" for="product-name">Nome do Produto</label>
+            <input type="text" id="product-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="product-category">Categoria</label>
+            <select id="product-category" class="form-input" required>
+              <option value="burgers">🍔 Burgers</option>
+              <option value="pizzas">🍕 Pizzas</option>
+              <option value="bebidas">🥤 Bebidas</option>
+              <option value="sobremesas">🍰 Sobremesas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="product-description">Descrição</label>
+            <input type="text" id="product-description" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="product-price">Preço (MT)</label>
+            <input type="number" id="product-price" class="form-input" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Imagem do Produto</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="product-image-file" accept="image/*" class="form-input">
+              <div class="file-input-label" id="file-input-label">
+                📷 Clique para selecionar uma imagem
+              </div>
+            </div>
+            <div id="image-preview" class="image-preview" style="display: none;"></div>
+            <small style="color: #666; margin-top: 4px; display: block;">
+              Ou cole uma URL de imagem abaixo
+            </small>
+            <input type="text" id="product-image-url" class="form-input" placeholder="https://exemplo.com/imagem.jpg" style="margin-top: 8px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" id="product-promotion"> Em Promoção
+            </label>
+          </div>
+          <div class="form-group" id="original-price-group" style="display: none;">
+            <label class="form-label" for="product-original-price">Preço Original (MT)</label>
+            <input type="number" id="product-original-price" class="form-input" step="0.01">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancel-product">Cancelar</button>
+            <button type="submit" class="btn btn-success">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script>
+    // O mesmo código JavaScript anterior permanece aqui
+    // Sistema de dados local
+    const LocalStorageSDK = {
+      init(callback) {
+        this.callback = callback;
+        this.loadData();
+        return Promise.resolve({ isOk: true });
+      },
+
+      loadData() {
+        const data = JSON.parse(localStorage.getItem('restaurant-data') || '[]');
+        const config = JSON.parse(localStorage.getItem('restaurant-config') || '{}');
+        const partners = JSON.parse(localStorage.getItem('restaurant-partners') || '[]');
+        
+        if (this.callback) {
+          this.callback.onDataChanged(data);
+        }
+        return { data, config, partners };
+      },
+
+      saveData(data) {
+        localStorage.setItem('restaurant-data', JSON.stringify(data));
+        if (this.callback) {
+          this.callback.onDataChanged(data);
+        }
+      },
+
+      saveConfig(config) {
+        localStorage.setItem('restaurant-config', JSON.stringify(config));
+      },
+
+      savePartners(partners) {
+        localStorage.setItem('restaurant-partners', JSON.stringify(partners));
+      },
+
+      create(item) {
+        const data = JSON.parse(localStorage.getItem('restaurant-data') || '[]');
+        const newItem = {
+          ...item,
+          __backendId: Date.now().toString(),
+          created_at: new Date().toISOString()
+        };
+        data.push(newItem);
+        this.saveData(data);
+        return Promise.resolve({ isOk: true, data: newItem });
+      },
+
+      update(updatedItem) {
+        const data = JSON.parse(localStorage.getItem('restaurant-data') || '[]');
+        const index = data.findIndex(item => item.__backendId === updatedItem.__backendId);
+        if (index !== -1) {
+          data[index] = { ...data[index], ...updatedItem };
+          this.saveData(data);
+          return Promise.resolve({ isOk: true });
+        }
+        return Promise.resolve({ isOk: false });
+      },
+
+      delete(itemToDelete) {
+        const data = JSON.parse(localStorage.getItem('restaurant-data') || '[]');
+        const filteredData = data.filter(item => item.__backendId !== itemToDelete.__backendId);
+        this.saveData(filteredData);
+        return Promise.resolve({ isOk: true });
+      }
+    };
+
+    // Configuração padrão
+    const defaultConfig = {
+      restaurant_name: "Sabor da Esquina",
+      whatsapp_number: "+258822937027",
+      logo_url: "",
+      primary_color: "#ea1d2c",
+      secondary_color: "#22c55e"
+    };
+
+    // Estado global
+    let cart = [];
+    let products = [];
+    let orders = [];
+    let users = [];
+    let partners = [];
+    let editingProduct = null;
+    let currentUser = null;
+    let isLogin = true;
+    let selectedPaymentMethod = null;
+    let currentImageFile = null;
+    let currentLogoFile = null;
+    let currentPartnerFiles = [];
+    let restaurantConfig = {};
+    
+    // Variáveis para os sliders
+    let carouselInterval = null;
+    let partnersInterval = null;
+    let currentSlide = 0;
+    let totalSlides = 0;
+    let partnersPosition = 0;
+
+    // Handler de dados
+    const dataHandler = {
+      onDataChanged(data) {
+        users = data.filter(item => item.type === 'user');
+        products = data.filter(item => item.type === 'product');
+        orders = data.filter(item => item.type === 'order');
+        
+        renderProducts();
+        renderCarousel();
+        renderPartners();
+        if (currentUser && currentUser.role === 'admin') {
+          renderAdminProducts();
+          renderAdminOrders();
+          renderPartnersPreview();
+        }
+      }
+    };
+
+    // Inicialização
+    async function init() {
+      const { data, config, partners: savedPartners } = LocalStorageSDK.loadData();
+      restaurantConfig = { ...defaultConfig, ...config };
+      partners = savedPartners || [];
+      
+      // Aplicar configurações
+      applyRestaurantConfig();
+      
+      if (data.length === 0) {
+        const initialProducts = [
+          {
+            type: 'product',
+            product_name: 'Hambúrguer Clássico',
+            category: 'burgers',
+            description: 'Pão, carne, queijo e salada',
+            price: 150.00,
+            image_url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGNUY1RjUiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjOTk5Ij7imqAgQnVyZ2VyIMKbPC90ZXh0Pjwvc3ZnPg==',
+            promotion: true,
+            original_price: 180.00,
+            available: true,
+            __backendId: '1',
+            created_at: new Date().toISOString()
+          },
+          {
+            type: 'product',
+            product_name: 'Pizza Margherita',
+            category: 'pizzas',
+            description: 'Molho, mussarela e manjericão',
+            price: 350.00,
+            image_url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGNUY1RjUiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mWFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSI+4pqgIFBpenphIMKbPC90ZXh0Pjwvc3ZnPg==',
+            promotion: true,
+            original_price: 400.00,
+            available: true,
+            __backendId: '2',
+            created_at: new Date().toISOString()
+          },
+          {
+            type: 'product',
+            product_name: 'Coca-Cola',
+            category: 'bebidas',
+            description: 'Lata 350ml',
+            price: 40.00,
+            image_url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGNUY1RjUiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjOTk5Ij7imqAgQmViaWRhIMKbPC90ZXh0Pjwvc3ZnPg==',
+            promotion: true,
+            original_price: 50.00,
+            available: true,
+            __backendId: '3',
+            created_at: new Date().toISOString()
+          }
+        ];
+        localStorage.setItem('restaurant-data', JSON.stringify(initialProducts));
+      }
+
+      // Adicionar alguns parceiros de exemplo se não existirem
+      if (partners.length === 0) {
+        partners = [
+          'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDMwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiMyQjJCMkIiLz48dGV4dCB4PSIxNTAiIHk9Ijc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNGRkYiPlBhcmNlaXJvIDE8L3RleHQ+PC9zdmc+',
+          'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDMwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiMyQjJCMkIiLz48dGV4dCB4PSIxNTAiIHk9Ijc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNGRkYiPlBhcmNlaXJvIDI8L3RleHQ+PC9zdmc+',
+          'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDMwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiMyQjJCMkIiLz48dGV4dCB4PSIxNTAiIHk9Ijc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNGRkYiPlBhcmNlaXJvIDM8L3RleHQ+PC9zdmc+',
+          'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDMwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiMyQjJCMkIiLz48dGV4dCB4PSIxNTAiIHk9Ijc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNGRkYiPlBhcmNlaXJvIDQ8L3RleHQ+PC9zdmc+'
+        ];
+        LocalStorageSDK.savePartners(partners);
+      }
+
+      const result = await LocalStorageSDK.init(dataHandler);
+      if (!result.isOk) {
+        showToast('Erro ao inicializar sistema');
+      }
+
+      // Configurar eventos
+      setupProductForm();
+      setupLogoUpload();
+      setupPartnersUpload();
+      setupPartnersSlider();
+      
+      // Iniciar auto-rotação dos sliders
+      startCarouselAutoRotate();
+      startPartnersAutoRotate();
+    }
+
+    // Configurar upload de logos de parceiros
+    function setupPartnersUpload() {
+      const partnersUpload = document.getElementById('partners-upload');
+      
+      partnersUpload.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+          currentPartnerFiles = files;
+          
+          // Pré-visualizar as imagens
+          files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              // Adicionar à pré-visualização
+              addPartnerToPreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+          });
+          
+          showToast(`${files.length} logos de parceiros carregados para pré-visualização`);
+        }
+      });
+    }
+
+    // Adicionar parceiro à pré-visualização
+    function addPartnerToPreview(imageUrl, index = null) {
+      const previewContainer = document.getElementById('partners-preview');
+      const previewId = index !== null ? index : Date.now();
+      
+      const previewItem = document.createElement('div');
+      previewItem.className = 'partner-preview-item';
+      previewItem.dataset.id = previewId;
+      
+      previewItem.innerHTML = `
+        <img src="${imageUrl}" alt="Logo parceiro">
+        <button class="remove-partner-btn" onclick="removePartnerFromPreview(${previewId})">×</button>
+      `;
+      
+      previewContainer.appendChild(previewItem);
+    }
+
+    // Remover parceiro da pré-visualização
+    window.removePartnerFromPreview = (id) => {
+      const item = document.querySelector(`.partner-preview-item[data-id="${id}"]`);
+      if (item) {
+        item.remove();
+      }
+    };
+
+    // Renderizar pré-visualização dos parceiros no admin
+    function renderPartnersPreview() {
+      const previewContainer = document.getElementById('partners-preview');
+      previewContainer.innerHTML = '';
+      
+      if (partners.length === 0) {
+        previewContainer.innerHTML = `
+          <div style="width: 100%; text-align: center; color: #999; padding: 20px; font-size: 14px;">
+            Nenhum parceiro adicionado ainda
+          </div>
+        `;
+      } else {
+        partners.forEach((partner, index) => {
+          addPartnerToPreview(partner, index);
+        });
+      }
+      
+      // Adicionar botão para adicionar mais
+      const addBtn = document.createElement('div');
+      addBtn.className = 'add-partner-btn';
+      addBtn.innerHTML = `
+        <div>📷</div>
+        <div>Adicionar</div>
+      `;
+      addBtn.onclick = () => {
+        document.getElementById('partners-upload').click();
+      };
+      previewContainer.appendChild(addBtn);
+    }
+
+    // Salvar parceiros
+    async function savePartners() {
+      // Primeiro, adicionar os novos arquivos carregados
+      if (currentPartnerFiles.length > 0) {
+        const newPartners = await Promise.all(
+          currentPartnerFiles.map(file => {
+            return new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onload = (e) => resolve(e.target.result);
+              reader.readAsDataURL(file);
+            });
+          })
+        );
+        
+        partners = [...partners, ...newPartners];
+        currentPartnerFiles = [];
+      }
+      
+      // Depois, verificar os parceiros na pré-visualização
+      const previewItems = document.querySelectorAll('.partner-preview-item');
+      const newPartnersList = [];
+      
+      previewItems.forEach(item => {
+        const img = item.querySelector('img');
+        if (img && img.src) {
+          newPartnersList.push(img.src);
+        }
+      });
+      
+      partners = newPartnersList;
+      LocalStorageSDK.savePartners(partners);
+      renderPartners();
+      renderPartnersPreview();
+      showToast('Parceiros salvos com sucesso!');
+      
+      // Resetar o input de arquivo
+      document.getElementById('partners-upload').value = '';
+    }
+
+    // Limpar todos os parceiros
+    function clearPartners() {
+      if (confirm('Tem certeza que deseja remover todos os parceiros?')) {
+        partners = [];
+        LocalStorageSDK.savePartners(partners);
+        renderPartners();
+        renderPartnersPreview();
+        showToast('Todos os parceiros foram removidos');
+      }
+    }
+
+    // Configurar slider dos parceiros
+    function setupPartnersSlider() {
+      const prevBtn = document.getElementById('partners-prev');
+      const nextBtn = document.getElementById('partners-next');
+      
+      if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+          movePartnersSlider(-1);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+          movePartnersSlider(1);
+        });
+      }
+    }
+
+    function movePartnersSlider(direction) {
+      const track = document.getElementById('partners-track');
+      if (!track) return;
+      
+      const partnerWidth = window.innerWidth < 768 ? 100 + 20 : 150 + 30;
+      const maxPosition = Math.max(0, partners.length * partnerWidth - track.parentElement.offsetWidth);
+      
+      partnersPosition += direction * partnerWidth * 2; // Mover 2 logos por vez em mobile, 3 em desktop
+      
+      // Limitar posição
+      if (partnersPosition < 0) {
+        partnersPosition = 0;
+      } else if (partnersPosition > maxPosition) {
+        partnersPosition = maxPosition;
+      }
+      
+      track.style.transform = `translateX(-${partnersPosition}px)`;
+      updatePartnersButtons();
+    }
+
+    function updatePartnersButtons() {
+      const track = document.getElementById('partners-track');
+      if (!track) return;
+      
+      const prevBtn = document.getElementById('partners-prev');
+      const nextBtn = document.getElementById('partners-next');
+      
+      if (prevBtn && nextBtn) {
+        const partnerWidth = window.innerWidth < 768 ? 100 + 20 : 150 + 30;
+        const maxPosition = Math.max(0, partners.length * partnerWidth - track.parentElement.offsetWidth);
+        
+        prevBtn.disabled = partnersPosition <= 0;
+        nextBtn.disabled = partnersPosition >= maxPosition || maxPosition <= 0;
+      }
+    }
+
+    function startPartnersAutoRotate() {
+      if (partnersInterval) clearInterval(partnersInterval);
+      
+      if (partners.length > 3) { // Só rotacionar se tiver mais que 3 logos
+        partnersInterval = setInterval(() => {
+          movePartnersSlider(1);
+        }, 3000);
+      }
+    }
+
+    // Renderizar parceiros no footer
+    function renderPartners() {
+      const track = document.getElementById('partners-track');
+      if (!track) return;
+      
+      track.innerHTML = '';
+      
+      if (partners.length === 0) {
+        track.innerHTML = `
+          <div class="partner-logo">
+            <div class="partner-placeholder">
+              Nenhum parceiro adicionado
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      partners.forEach((partner, index) => {
+        const logoDiv = document.createElement('div');
+        logoDiv.className = 'partner-logo';
+        logoDiv.innerHTML = `<img src="${partner}" alt="Parceiro ${index + 1}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'partner-placeholder\\'>Parceiro ${index + 1}</div>';">`;
+        track.appendChild(logoDiv);
+      });
+      
+      updatePartnersButtons();
+    }
+
+    // Aplicar configurações do restaurante
+    function applyRestaurantConfig() {
+      document.getElementById('restaurant-name').textContent = restaurantConfig.restaurant_name;
+      document.getElementById('restaurant-name-input').value = restaurantConfig.restaurant_name;
+      document.getElementById('whatsapp-number').value = restaurantConfig.whatsapp_number;
+      document.getElementById('footer-whatsapp').textContent = restaurantConfig.whatsapp_number.replace(/(\d{3})(\d{2})(\d{3})(\d{3})/, '+$1 $2 $3 $4');
+      
+      // Aplicar logo
+      if (restaurantConfig.logo_url) {
+        document.getElementById('logo-img').src = restaurantConfig.logo_url;
+        document.getElementById('logo-img').style.display = 'block';
+        document.getElementById('logo-preview-img').src = restaurantConfig.logo_url;
+        document.getElementById('logo-preview-img').style.display = 'block';
+        document.getElementById('logo-preview-text').style.display = 'none';
+      }
+    }
+
+    // Configurar upload de logo
+    function setupLogoUpload() {
+      const logoUpload = document.getElementById('logo-upload');
+      const logoFileLabel = document.getElementById('logo-file-label');
+
+      logoUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          currentLogoFile = file;
+          logoFileLabel.textContent = file.name;
+          
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('logo-preview-img').src = e.target.result;
+            document.getElementById('logo-preview-img').style.display = 'block';
+            document.getElementById('logo-preview-text').style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // Upload do logo
+    function uploadLogo() {
+      if (!currentLogoFile) {
+        showToast('Selecione um arquivo de logo primeiro');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        restaurantConfig.logo_url = e.target.result;
+        LocalStorageSDK.saveConfig(restaurantConfig);
+        applyRestaurantConfig();
+        showToast('Logotipo atualizado com sucesso!');
+        
+        // Reset do formulário
+        document.getElementById('logo-upload').value = '';
+        document.getElementById('logo-file-label').textContent = '📷 Clique para selecionar um logotipo';
+        currentLogoFile = null;
+      };
+      reader.readAsDataURL(currentLogoFile);
+    }
+
+    // Remover logo
+    function removeLogo() {
+      restaurantConfig.logo_url = '';
+      LocalStorageSDK.saveConfig(restaurantConfig);
+      applyRestaurantConfig();
+      showToast('Logotipo removido');
+      
+      document.getElementById('logo-preview-img').style.display = 'none';
+      document.getElementById('logo-preview-text').style.display = 'block';
+    }
+
+    // Salvar configurações do restaurante
+    function saveRestaurantConfig() {
+      restaurantConfig.restaurant_name = document.getElementById('restaurant-name-input').value;
+      restaurantConfig.whatsapp_number = document.getElementById('whatsapp-number').value;
+      
+      LocalStorageSDK.saveConfig(restaurantConfig);
+      applyRestaurantConfig();
+      showToast('Configurações salvas com sucesso!');
+    }
+
+    // Configurar formulário de produto
+    function setupProductForm() {
+      const imageFileInput = document.getElementById('product-image-file');
+      const imageUrlInput = document.getElementById('product-image-url');
+      const imagePreview = document.getElementById('image-preview');
+      const fileInputLabel = document.getElementById('file-input-label');
+
+      imageFileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          currentImageFile = file;
+          fileInputLabel.textContent = file.name;
+          
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            imagePreview.style.display = 'flex';
+          };
+          reader.readAsDataURL(file);
+          
+          // Limpar URL quando arquivo é selecionado
+          imageUrlInput.value = '';
+        }
+      });
+
+      imageUrlInput.addEventListener('input', function(e) {
+        if (e.target.value) {
+          // Limpar arquivo quando URL é inserida
+          imageFileInput.value = '';
+          currentImageFile = null;
+          fileInputLabel.textContent = '📷 Clique para selecionar uma imagem';
+          imagePreview.innerHTML = `<img src="${e.target.value}" alt="Preview" onerror="this.style.display='none'">`;
+          imagePreview.style.display = 'flex';
+        }
+      });
+    }
+
+    // Sistema de Login
+    document.getElementById('login-btn').addEventListener('click', () => {
+      document.getElementById('login-modal').classList.add('active');
+    });
+
+    document.getElementById('cancel-login').addEventListener('click', () => {
+      document.getElementById('login-modal').classList.remove('active');
+    });
+
+    document.getElementById('login-switch').addEventListener('click', (e) => {
+      e.preventDefault();
+      isLogin = !isLogin;
+      const nameGroup = document.getElementById('name-group');
+      const nameInput = document.getElementById('login-name');
+      
+      if (isLogin) {
+        document.getElementById('login-title').textContent = 'Entrar';
+        nameGroup.style.display = 'none';
+        nameInput.removeAttribute('required');
+        document.getElementById('login-switch-text').textContent = 'Não tem conta?';
+        document.getElementById('login-switch').textContent = 'Criar conta';
+      } else {
+        document.getElementById('login-title').textContent = 'Criar Conta';
+        nameGroup.style.display = 'block';
+        nameInput.setAttribute('required', 'required');
+        document.getElementById('login-switch-text').textContent = 'Já tem conta?';
+        document.getElementById('login-switch').textContent = 'Entrar';
+      }
+    });
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value;
+      const name = document.getElementById('login-name').value;
+
+      if (isLogin) {
+        if (username === 'admin' && password === 'admin') {
+          currentUser = { name: 'Administrador', username: 'admin', role: 'admin' };
+          showToast('Bem-vindo, Administrador!');
+          updateUI();
+          document.getElementById('login-modal').classList.remove('active');
+          document.getElementById('login-form').reset();
+        } else {
+          const user = users.find(u => u.phone === username && u.password === password);
+          if (user) {
+            currentUser = user;
+            showToast(`Bem-vindo, ${user.name}!`);
+            updateUI();
+            document.getElementById('login-modal').classList.remove('active');
+            document.getElementById('login-form').reset();
+          } else {
+            showToast('Usuário ou senha inválidos');
+          }
+        }
+      } else {
+        if (!username.startsWith('+258')) {
+          showToast('Use um número de Moçambique (+258)');
+          return;
+        }
+
+        if (users.find(u => u.phone === username)) {
+          showToast('Número já cadastrado');
+          return;
+        }
+
+        const result = await LocalStorageSDK.create({
+          type: 'user',
+          name,
+          phone: username,
+          password,
+          role: 'customer'
+        });
+
+        if (result.isOk) {
+          showToast('Conta criada com sucesso! Faça login.');
+          isLogin = true;
+          document.getElementById('login-title').textContent = 'Entrar';
+          document.getElementById('name-group').style.display = 'none';
+          document.getElementById('login-name').removeAttribute('required');
+          document.getElementById('login-switch-text').textContent = 'Não tem conta?';
+          document.getElementById('login-switch').textContent = 'Criar conta';
+          document.getElementById('login-form').reset();
+        } else {
+          showToast('Erro ao criar conta');
+        }
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      currentUser = null;
+      cart = [];
+      updateUI();
+      showToast('Logout realizado com sucesso');
+    });
+
+    // Renderização de Produtos
+    function renderProducts(category = 'all') {
+      const grid = document.getElementById('products-grid');
+      const empty = document.getElementById('empty-products');
+      
+      let filtered = products.filter(p => p.available);
+      if (category !== 'all') {
+        filtered = filtered.filter(p => p.category === category);
+      }
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      empty.style.display = 'none';
+      
+      grid.innerHTML = filtered.map(product => {
+        return `
+        <div class="product-card">
+          <div class="product-image">
+            <img src="${product.image_url}" alt="${product.product_name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="product-image-fallback" style="display: none;">📷</span>
+            ${product.promotion ? '<span class="promotion-badge">PROMOÇÃO</span>' : ''}
+          </div>
+          <div class="product-info">
+            <div class="product-name">${product.product_name}</div>
+            <div class="product-description">${product.description}</div>
+            <div class="product-price">
+              <span class="current-price">${product.price.toFixed(2)} MT</span>
+              ${product.promotion && product.original_price ? 
+                `<span class="original-price">${product.original_price.toFixed(2)} MT</span>` : ''}
+            </div>
+            <button class="add-to-cart-btn" onclick="addToCart('${product.__backendId}')">
+              Adicionar ao Carrinho
+            </button>
+          </div>
+        </div>
+      `;
+      }).join('');
+    }
+
+    // Categorias
+    document.querySelectorAll('.category-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderProducts(chip.dataset.category);
+      });
+    });
+
+    // Carousel com 3 cards visíveis - RESPONSIVO
+    function renderCarousel() {
+      const promos = products.filter(p => p.promotion && p.available);
+      const section = document.getElementById('carousel-section');
+      const track = document.getElementById('carousel-track');
+      const dots = document.getElementById('carousel-dots');
+
+      if (promos.length === 0) {
+        section.style.display = 'none';
+        if (carouselInterval) clearInterval(carouselInterval);
+        return;
+      }
+
+      section.style.display = 'block';
+      
+      // Limpar conteúdo anterior
+      track.innerHTML = '';
+      totalSlides = promos.length;
+      
+      // Mostrar apenas 3 cards: left, center, right
+      const indices = [
+        (currentSlide - 1 + totalSlides) % totalSlides, // left
+        currentSlide, // center
+        (currentSlide + 1) % totalSlides // right
+      ];
+
+      indices.forEach((index, position) => {
+        const product = promos[index];
+        if (!product) return;
+        
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        slide.dataset.index = index;
+        
+        // Determinar posição
+        if (position === 0) {
+          slide.classList.add('left');
+        } else if (position === 1) {
+          slide.classList.add('center'); // CARD CENTRAL COM ZOOM
+        } else if (position === 2) {
+          slide.classList.add('right');
+        }
+        
+        // SEM DESCRIÇÃO - apenas nome, preço e botão
+        slide.innerHTML = `
+          <div class="carousel-image">
+            <img src="${product.image_url}" alt="${product.product_name}" onerror="this.style.display='none'">
+            ${product.promotion ? '<span class="promo-badge">PROMOÇÃO</span>' : ''}
+          </div>
+          <div class="carousel-content">
+            <div class="carousel-item-title">${product.product_name}</div>
+            <div class="carousel-price">
+              <span class="carousel-current-price">${product.price.toFixed(2)} MT</span>
+              ${product.original_price ? 
+                `<span class="carousel-original-price">${product.original_price.toFixed(2)} MT</span>` : 
+                ''}
+            </div>
+            <button class="carousel-add-btn" onclick="addToCartFromCarousel('${product.__backendId}')">
+              Adicionar
+            </button>
+          </div>
+        `;
+        
+        track.appendChild(slide);
+      });
+      
+      // Render dots
+      dots.innerHTML = promos.map((_, i) => 
+        `<span class="carousel-dot ${i === currentSlide ? 'active' : ''}" onclick="goToSlide(${i})"></span>`
+      ).join('');
+      
+      // Atualizar botões
+      updateCarouselButtons();
+    }
+
+    function updateCarouselButtons() {
+      const prevBtn = document.querySelector('.carousel-prev');
+      const nextBtn = document.querySelector('.carousel-next');
+      
+      if (prevBtn && nextBtn) {
+        prevBtn.disabled = totalSlides <= 1;
+        nextBtn.disabled = totalSlides <= 1;
+      }
+    }
+
+    function nextSlide() {
+      if (totalSlides > 1) {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        renderCarousel();
+      }
+    }
+
+    function prevSlide() {
+      if (totalSlides > 1) {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        renderCarousel();
+      }
+    }
+
+    function goToSlide(index) {
+      if (totalSlides > 1) {
+        currentSlide = index % totalSlides;
+        renderCarousel();
+      }
+    }
+
+    function startCarouselAutoRotate() {
+      if (carouselInterval) clearInterval(carouselInterval);
+      carouselInterval = setInterval(() => {
+        nextSlide();
+      }, 4000);
+    }
+
+    window.addToCartFromCarousel = (productId) => {
+      addToCart(productId);
+    };
+
+    // Carrinho
+    window.addToCart = (productId) => {
+      if (!currentUser) {
+        showToast('Faça login para adicionar ao carrinho');
+        document.getElementById('login-modal').classList.add('active');
+        return;
+      }
+
+      if (currentUser.role === 'admin') {
+        showToast('Admins não podem fazer pedidos');
+        return;
+      }
+
+      const product = products.find(p => p.__backendId === productId);
+      const cartItem = cart.find(item => item.product.__backendId === productId);
+
+      if (cartItem) {
+        cartItem.quantity++;
+      } else {
+        cart.push({ product, quantity: 1 });
+      }
+
+      updateCart();
+      showToast('Produto adicionado ao carrinho!');
+    };
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const badge = document.getElementById('cart-badge');
+      const total = document.getElementById('cart-total');
+
+      const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      badge.textContent = itemCount;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🛒</div><p>Carrinho vazio</p></div>';
+      } else {
+        cartItems.innerHTML = cart.map((item, index) => {
+          return `
+          <div class="cart-item">
+            <div style="width: 50px; height: 50px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border-radius: 6px; overflow: hidden;">
+              <img src="${item.product.image_url}" alt="${item.product.product_name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'">
+            </div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.product.product_name}</div>
+              <div class="cart-item-price">${item.product.price.toFixed(2)} MT</div>
+              <div class="cart-item-quantity">
+                <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                <span>${item.quantity}</span>
+                <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+        }).join('');
+      }
+
+      const totalAmount = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      total.textContent = `${totalAmount.toFixed(2)} MT`;
+    }
+
+    window.updateQuantity = (index, delta) => {
+      cart[index].quantity += delta;
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCart();
+    };
+
+    document.getElementById('cart-icon').addEventListener('click', () => {
+      document.getElementById('cart-panel').classList.add('active');
+      if (currentUser) {
+        document.getElementById('cart-customer-name').textContent = currentUser.name;
+      }
+    });
+
+    document.getElementById('close-cart').addEventListener('click', () => {
+      document.getElementById('cart-panel').classList.remove('active');
+    });
+
+    // Seleção de método de pagamento
+    document.querySelectorAll('.payment-method-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedPaymentMethod = btn.dataset.method;
+      });
+    });
+
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      if (cart.length === 0) {
+        showToast('Carrinho vazio');
+        return;
+      }
+
+      if (!selectedPaymentMethod) {
+        showToast('Por favor, selecione o método de pagamento');
+        return;
+      }
+
+      const name = currentUser.name;
+      const phone = currentUser.phone || currentUser.username;
+
+      const items = cart.map(item => 
+        `${item.quantity}x ${item.product.product_name} - ${(item.product.price * item.quantity).toFixed(2)} MT`
+      ).join('\n');
+      const total = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      
+      const message = `🍔 *Novo Pedido - ${restaurantConfig.restaurant_name}*\n\n*Cliente:* ${name}\n*Telefone:* ${phone}\n*Pagamento:* ${selectedPaymentMethod}\n\n*Itens:*\n${items}\n\n*Total:* ${total.toFixed(2)} MT`;
+      
+      window.open(`https://wa.me/${restaurantConfig.whatsapp_number.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+      
+      LocalStorageSDK.create({
+        type: 'order',
+        order_id: Date.now(),
+        customer_name: name,
+        customer_phone: phone,
+        items: cart,
+        total: total,
+        payment_method: selectedPaymentMethod,
+        status: 'pending'
+      });
+
+      cart = [];
+      selectedPaymentMethod = null;
+      document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('selected'));
+      updateCart();
+      document.getElementById('cart-panel').classList.remove('active');
+      showToast('Pedido enviado para o WhatsApp!');
+    });
+
+    // Sistema Admin
+    document.getElementById('add-product-btn').addEventListener('click', () => {
+      editingProduct = null;
+      document.getElementById('product-modal-title').textContent = 'Adicionar Produto';
+      document.getElementById('product-form').reset();
+      document.getElementById('image-preview').style.display = 'none';
+      document.getElementById('file-input-label').textContent = '📷 Clique para selecionar uma imagem';
+      currentImageFile = null;
+      document.getElementById('product-modal').classList.add('active');
+    });
+
+    document.getElementById('cancel-product').addEventListener('click', () => {
+      document.getElementById('product-modal').classList.remove('active');
+    });
+
+    document.getElementById('product-promotion').addEventListener('change', (e) => {
+      document.getElementById('original-price-group').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('product-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      let imageUrl = document.getElementById('product-image-url').value.trim();
+      
+      // Se há arquivo selecionado, converte para Data URL
+      if (currentImageFile) {
+        imageUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(currentImageFile);
+        });
+      }
+      
+      // Se não há imagem, usa uma padrão
+      if (!imageUrl) {
+        imageUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGNUY1RjUiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjOTk5Ij7imqAgUHJvZHV0byDimqA8L3RleHQ+PC9zdmc+';
+      }
+
+      const productData = {
+        type: 'product',
+        product_name: document.getElementById('product-name').value,
+        category: document.getElementById('product-category').value,
+        description: document.getElementById('product-description').value,
+        price: parseFloat(document.getElementById('product-price').value),
+        image_url: imageUrl,
+        promotion: document.getElementById('product-promotion').checked,
+        original_price: document.getElementById('product-promotion').checked ? 
+          parseFloat(document.getElementById('product-original-price').value) : 0,
+        available: true
+      };
+
+      let result;
+      if (editingProduct) {
+        result = await LocalStorageSDK.update({ ...editingProduct, ...productData });
+      } else {
+        result = await LocalStorageSDK.create(productData);
+      }
+
+      if (result.isOk) {
+        showToast(editingProduct ? 'Produto atualizado!' : 'Produto adicionado!');
+        document.getElementById('product-modal').classList.remove('active');
+      } else {
+        showToast('Erro ao salvar produto');
+      }
+    });
+
+    function renderAdminProducts() {
+      const list = document.getElementById('admin-products-list');
+      
+      if (products.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>Nenhum produto cadastrado</p></div>';
+        return;
+      }
+
+      list.innerHTML = products.map((product) => {
+        return `
+        <div class="product-item">
+          <div class="product-item-image">
+            <img src="${product.image_url}" alt="${product.product_name}" onerror="this.style.display='none'">
+          </div>
+          <div class="product-item-details">
+            <div style="font-weight: 700; margin-bottom: 4px;">${product.product_name}</div>
+            <div style="color: #666; font-size: 12px;">${product.description}</div>
+            <div style="margin-top: 8px;">
+              <span style="color: #ea1d2c; font-weight: 700;">${product.price.toFixed(2)} MT</span>
+              ${product.promotion ? '<span style="background: #22c55e; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 6px;">PROMOÇÃO</span>' : ''}
+              ${!product.available ? '<span style="background: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 6px;">INDISPONÍVEL</span>' : ''}
+            </div>
+          </div>
+          <div class="product-item-actions">
+            <button class="icon-btn" onclick="editProduct('${product.__backendId}')" title="Editar">✏️</button>
+            <button class="icon-btn" onclick="toggleProductAvailability('${product.__backendId}')" title="${product.available ? 'Desativar' : 'Ativar'}">
+              ${product.available ? '👁️' : '🚫'}
+            </button>
+            <button class="icon-btn" onclick="deleteProduct('${product.__backendId}')" title="Excluir">🗑️</button>
+          </div>
+        </div>
+      `;
+      }).join('');
+    }
+
+    window.editProduct = (id) => {
+      editingProduct = products.find(p => p.__backendId === id);
+      document.getElementById('product-modal-title').textContent = 'Editar Produto';
+      document.getElementById('product-name').value = editingProduct.product_name;
+      document.getElementById('product-category').value = editingProduct.category;
+      document.getElementById('product-description').value = editingProduct.description;
+      document.getElementById('product-price').value = editingProduct.price;
+      document.getElementById('product-image-url').value = editingProduct.image_url.startsWith('http') ? editingProduct.image_url : '';
+      document.getElementById('product-promotion').checked = editingProduct.promotion;
+      document.getElementById('product-original-price').value = editingProduct.original_price || '';
+      document.getElementById('original-price-group').style.display = editingProduct.promotion ? 'block' : 'none';
+      
+      // Mostrar preview da imagem atual
+      const imagePreview = document.getElementById('image-preview');
+      if (editingProduct.image_url) {
+        imagePreview.innerHTML = `<img src="${editingProduct.image_url}" alt="Preview">`;
+        imagePreview.style.display = 'flex';
+      }
+      
+      document.getElementById('product-modal').classList.add('active');
+    };
+
+    window.toggleProductAvailability = async (id) => {
+      const product = products.find(p => p.__backendId === id);
+      const result = await LocalStorageSDK.update({ ...product, available: !product.available });
+      if (result.isOk) {
+        showToast(product.available ? 'Produto desativado' : 'Produto ativado');
+      }
+    };
+
+    window.deleteProduct = async (id) => {
+      const product = products.find(p => p.__backendId === id);
+      const result = await LocalStorageSDK.delete(product);
+      if (result.isOk) {
+        showToast('Produto excluído');
+      }
+    };
+
+    function renderAdminOrders() {
+      const list = document.getElementById('admin-orders-list');
+      
+      if (orders.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>Nenhum pedido registrado</p></div>';
+        return;
+      }
+
+      list.innerHTML = orders.map(order => `
+        <div class="product-item">
+          <div style="flex: 1;">
+            <div style="font-weight: 700; margin-bottom: 4px; font-size: 14px;">Pedido #${order.order_id}</div>
+            <div style="color: #666; font-size: 12px;">${order.customer_name} - ${order.customer_phone}</div>
+            <div style="margin-top: 8px; color: #ea1d2c; font-weight: 700; font-size: 14px;">${order.total.toFixed(2)} MT</div>
+            <div style="margin-top: 4px; font-size: 11px; color: #999;">${new Date(order.created_at).toLocaleString('pt-PT')}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.admin-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`admin-${tab.dataset.tab}`).classList.add('active');
+        
+        // Se for a aba de parceiros, renderizar a pré-visualização
+        if (tab.dataset.tab === 'partners' && currentUser && currentUser.role === 'admin') {
+          renderPartnersPreview();
+        }
+      });
+    });
+
+    // Atualiza UI
+    function updateUI() {
+      const loginBtn = document.getElementById('login-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      const cartIcon = document.getElementById('cart-icon');
+      const mainContent = document.getElementById('main-content');
+      const adminPanel = document.getElementById('admin-panel');
+      const footer = document.getElementById('footer');
+
+      if (currentUser) {
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'block';
+
+        if (currentUser.role === 'admin') {
+          mainContent.style.display = 'none';
+          adminPanel.style.display = 'block';
+          footer.style.display = 'none';
+          cartIcon.style.display = 'none';
+          renderAdminProducts();
+          renderAdminOrders();
+          renderPartnersPreview();
+        } else {
+          mainContent.style.display = 'block';
+          adminPanel.style.display = 'none';
+          footer.style.display = 'block';
+          cartIcon.style.display = 'block';
+        }
+      } else {
+        loginBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+        cartIcon.style.display = 'none';
+        mainContent.style.display = 'block';
+        adminPanel.style.display = 'none';
+        footer.style.display = 'block';
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Inicializar
+    init();
+
+    // Adicionar evento de redimensionamento para ajustar responsividade
+    window.addEventListener('resize', () => {
+      renderCarousel();
+      renderPartners();
+      updatePartnersButtons();
+    });
+  </script>
+</body>
+</html>
